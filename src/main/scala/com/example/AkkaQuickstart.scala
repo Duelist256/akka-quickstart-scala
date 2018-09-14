@@ -6,6 +6,8 @@ import kamon.Kamon
 import kamon.prometheus.PrometheusReporter
 import kamon.zipkin.ZipkinReporter
 
+import scala.util.Random
+
 //#greeter-companion
 //#greeter-messages
 object Greeter {
@@ -100,7 +102,12 @@ object AkkaQuickstart extends App {
   goodDayGreeter ! Greet
   goodDayGreeter ! WhoToGreet("Play")
 
-//    i += 1
-//    Thread.sleep(5000)
-//  }
+  val allGreeters = Vector(howdyGreeter, helloGreeter, goodDayGreeter)
+  def randomGreeter = allGreeters(Random.nextInt(allGreeters.length))
+
+  while(true) {
+    randomGreeter ! Greet
+    Thread.sleep(100)
+  }
+
 }
